@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>LocalBitcoins Charts</title>
+</head>
+    <body>
+        <h1>Test</h1>
+        <p>{{ records }}</p>
+        <canvas id="chart" width="400" height="400"></canvas>
+        <script src="{{ url_for('static', filename='Chart.js') }}"></script>
+        <script>
+            var recordData = {{ record_data|safe }};
+            var data = {
+                labels : recordData.localbitcoins_sell_usd.labels,
+                datasets: [
+                    {
+                        fillColor : "rgba(220,220,220,0.5)",
+                        strokeColor : "rgba(220,data220,220,1)",
+                        pointColor : "rgba(220,220,220,1)",
+                        pointStrokeColor : "#fff",
+                        data : [310, 310, 312, 310, 310, 310, 310],
+                        //data : recordData.localbitcoins_sell_usd.data,
+                    },
+                ],
+            };
+            var data2 = {
+                labels : recordData.localbitcoins_buy_usd.labels,
+                datasets: [
+                    {
+                        fillColor : "rgba(220,220,220,0.5)",
+                        strokeColor : "rgba(220,data220,220,1)",
+                        pointColor : "rgba(220,220,220,1)",
+                        pointStrokeColor : "#fff",
+                        data : recordData.localbitcoins_buy_usd.data,
+                    },
+                ],
+            };
+            var options = {
+                bezierCurve: false,
+                scaleOverlay: true,
+            };
+            var ctx = document.getElementById("chart").getContext("2d");
+            var chart = new Chart(ctx);
+            chart.Line(data, options);
+            options.animation = false;
+        </script>
+    </body>
+</html>
