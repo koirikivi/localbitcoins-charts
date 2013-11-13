@@ -6,7 +6,7 @@ import requests
 
 
 CONNECTION = sqlite3.connect("database.db")
-INTERVAL = 30
+INTERVAL = 60 * 5
 EQUATIONS = [
     ("localbitcoins_sell_usd",
      "https://localbitcoins.com/equation/localbitcoins_sell_usd"),
@@ -45,17 +45,20 @@ def main():
     create_schema()
     log("Entering main loop")
     while True:
-        timestamp = datetime.now()
-        log("New iteration at", timestamp)
-        for name, url in EQUATIONS:
-            response = requests.get(url)
-            if response.status_code != 200:
-                log("ERROR", response.status_code, url)
-                continue
-            value = response.text
-            log("INSERT", name, value, timestamp)
-            insert_record(name, value, timestamp);
-        time.sleep(INTERVAL)
+        try:
+            timestamp = datetime.now()
+            log("New iteration at", timestamp)
+            for name, url in EQUATIONS:
+                response = requests.get(url)
+                if response.status_code != 200:
+                    log("ERROR", response.status_code, url)
+                    continue
+                value = response.text
+                log("INSERT", name, value, timestamp)
+                insert_record(name, value, timestamp);
+            time.sleep(INTERVAL)
+        except Exception as e:
+            log("ERROR", e)
 
 
 if __name__ == "__main__":
