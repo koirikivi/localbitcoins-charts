@@ -6,7 +6,8 @@ from flask import Flask, render_template
 
 DEBUG = False
 DATABASE = "database.db"
-SERVER_NAME = "0.0.0.0:1337"
+HOST = "0.0.0.0"
+PORT = 1337
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -70,4 +71,4 @@ def foo():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host=app.config["HOST"], port=app.config["PORT"])
